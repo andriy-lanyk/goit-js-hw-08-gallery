@@ -33,7 +33,6 @@ function clickOnPhoto(event) {
   event.preventDefault();
   
   const target = event.target;
-  
   if (target.nodeName !== "IMG") return;
 
   toggleBackdrop();
@@ -49,48 +48,35 @@ function clickOnPhoto(event) {
 
 function closeModalWindow(event) {
   if (event.target.className === "lightbox__overlay" || event.code === "Escape" || event.target.className === "lightbox__button") {
-    console.log(event.target.className)
-      toggleBackdrop();
-  
-  imgInModalWindow.setAttribute("src", "");
-  imgInModalWindow.setAttribute("alt", "");
-
-  window.removeEventListener('keydown', closeModalWindow);
-  window.removeEventListener('keydown', flippingPhoto);
-}
+    toggleBackdrop();
+    
+    imgInModalWindow.setAttribute("src", "");
+    imgInModalWindow.setAttribute("alt", "");
+    
+    window.removeEventListener('keydown', closeModalWindow);
+    window.removeEventListener('keydown', flippingPhoto);
+  }
 }
 
 function flippingPhoto(event) {
-      const arrayOfOriginalUrl = getArrayOfImageURL(gallery);
-      const arrayOfImgDescription = getArrayOfImgDescription(gallery);
-      let indexOfUrlInArray = arrayOfOriginalUrl.indexOf(imgInModalWindow.src);
+  const arrayOfOriginalUrl = getArrayOfImageURL(gallery);
+  const arrayOfImgDescription = getArrayOfImgDescription(gallery);
+  let indexOfUrlInArray = arrayOfOriginalUrl.indexOf(imgInModalWindow.src);
   let indexOfDescriptionInArray = arrayOfImgDescription.indexOf(imgInModalWindow.alt);
-    
-  if (indexOfUrlInArray >= 1 && indexOfUrlInArray <= arrayOfOriginalUrl.length - 2) {
+  
   if (event.code === "ArrowLeft") {
+    if (indexOfUrlInArray === 0) {
+      return;
+    }
     imgInModalWindow.src = arrayOfOriginalUrl[indexOfUrlInArray - 1];
     imgInModalWindow.alt = arrayOfImgDescription[indexOfDescriptionInArray - 1];
   } else if (event.code === "ArrowRight") {
-    imgInModalWindow.src = arrayOfOriginalUrl[indexOfUrlInArray + 1];
-    imgInModalWindow.alt = arrayOfImgDescription[indexOfDescriptionInArray + 1];
-  }
-  }
-
-  if (indexOfUrlInArray === 0) {
-    if (event.code === "ArrowRight") {
-    imgInModalWindow.src = arrayOfOriginalUrl[indexOfUrlInArray + 1];
-    imgInModalWindow.alt = arrayOfImgDescription[indexOfDescriptionInArray + 1];
-  }
-  }
-
     if (indexOfUrlInArray === arrayOfOriginalUrl.length - 1) {
-  if (event.code === "ArrowLeft") {
-    imgInModalWindow.src = arrayOfOriginalUrl[indexOfUrlInArray - 1];
-    imgInModalWindow.alt = arrayOfImgDescription[indexOfDescriptionInArray - 1];
+      return;
+    }
+    imgInModalWindow.src = arrayOfOriginalUrl[indexOfUrlInArray + 1];
+    imgInModalWindow.alt = arrayOfImgDescription[indexOfDescriptionInArray + 1];
   }
-  }
-
-  console.log(imgInModalWindow)
 }
     
 function getArrayOfImageURL(gallery) {
