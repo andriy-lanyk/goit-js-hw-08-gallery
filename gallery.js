@@ -86,14 +86,3 @@ function getArrayOfImageURL(gallery) {
 function getArrayOfImgDescription(gallery) {
   return gallery.map(a => a.description)
 }
-
-
-
-  
-
-
-
-
-
-
-
