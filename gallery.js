@@ -2,7 +2,6 @@ import gallery from './gallery-items.js'
 
 const galleryList = document.querySelector('.js-gallery');
 const modalWindow = document.querySelector('.js-lightbox');
-const closeButton = document.querySelector('[data-action="close-lightbox"]')
 const imgInModalWindow = document.querySelector('.lightbox__image')
 
 const renderList = (galleryList) => {
@@ -39,60 +38,70 @@ function clickOnPhoto(event) {
 
   toggleBackdrop();
 
-  if (modalWindow.getAttribute("class").includes("is-open")) {
     imgInModalWindow.setAttribute("src", target.dataset.source);
     imgInModalWindow.setAttribute("alt", target.alt);
     
-    modalWindow.addEventListener('click', closeModalWindowOnBackdropClick);
+    modalWindow.addEventListener('click', closeModalWindow);
     
-    window.addEventListener('keydown', closeModalWindowPressEsc);
-    
+    window.addEventListener('keydown', closeModalWindow);
     window.addEventListener('keydown', flippingPhoto);
-
-    function flippingPhoto(KeyboardEvent) {
-  // console.log(target.dataset.source)
-      
-      
-  for (let i = 0; i < gallery.length; i += 1) {
-    if (KeyboardEvent.code === "ArrowLeft" && gallery[i].original === target.dataset.source) {
-      imgInModalWindow.setAttribute("src", gallery[i - 1].original);
-      imgInModalWindow.setAttribute("alt", gallery[i - 1].description);
-    } else if (KeyboardEvent.code === "ArrowRight" && gallery[i].original === target.dataset.source) {
-      imgInModalWindow.setAttribute("src", gallery[i + 1].original);
-      imgInModalWindow.setAttribute("alt", gallery[i + 1].description);
 }
 
-  }
-  console.log(KeyboardEvent.code)
-  // ArrowLeft
-  // ArrowRight
-}
-}
-}
+function closeModalWindow(event) {
+  if (event.target.className === "lightbox__overlay" || event.code === "Escape" || event.target.className === "lightbox__button") {
+    console.log(event.target.className)
+      toggleBackdrop();
   
-function closeModalWindowOnBackdropClick(event) {
-  if (event.target.className === "lightbox__overlay") {
-    toggleBackdrop();
-    imgInModalWindow.setAttribute("src", "");
-    imgInModalWindow.setAttribute("alt", "");
-  }
-}
-
-function closeModalWindowPressEsc(KeyboardEvent) {
-  if (KeyboardEvent.code === "Escape") {
-    toggleBackdrop();
-    imgInModalWindow.setAttribute("src", "");
-    imgInModalWindow.setAttribute("alt", "");
-  }
-}
-
-closeButton.addEventListener('click', closeModalWindow);
-
-function closeModalWindow() {
-  toggleBackdrop();
   imgInModalWindow.setAttribute("src", "");
   imgInModalWindow.setAttribute("alt", "");
+
+  window.removeEventListener('keydown', closeModalWindow);
+  window.removeEventListener('keydown', flippingPhoto);
 }
+}
+
+function flippingPhoto(event) {
+      const arrayOfOriginalUrl = getArrayOfImageURL(gallery);
+      const arrayOfImgDescription = getArrayOfImgDescription(gallery);
+      let indexOfUrlInArray = arrayOfOriginalUrl.indexOf(imgInModalWindow.src);
+      let indexOfDescriptionInArray = arrayOfImgDescription.indexOf(imgInModalWindow.alt);
+    
+  if (indexOfUrlInArray >= 1 && indexOfUrlInArray <= 7) {
+    console.log(indexOfUrlInArray)
+  if (event.code === "ArrowLeft") {
+    imgInModalWindow.src = arrayOfOriginalUrl[indexOfUrlInArray - 1];
+    imgInModalWindow.alt = arrayOfImgDescription[indexOfDescriptionInArray - 1];
+  } else if (event.code === "ArrowRight") {
+    imgInModalWindow.src = arrayOfOriginalUrl[indexOfUrlInArray + 1];
+    imgInModalWindow.alt = arrayOfImgDescription[indexOfDescriptionInArray + 1];
+  }
+  }
+
+  if (indexOfUrlInArray === 0) {
+    if (event.code === "ArrowRight") {
+    imgInModalWindow.src = arrayOfOriginalUrl[indexOfUrlInArray + 1];
+    imgInModalWindow.alt = arrayOfImgDescription[indexOfDescriptionInArray + 1];
+  }
+  }
+
+    if (indexOfUrlInArray === 8) {
+  if (event.code === "ArrowLeft") {
+    imgInModalWindow.src = arrayOfOriginalUrl[indexOfUrlInArray - 1];
+    imgInModalWindow.alt = arrayOfImgDescription[indexOfDescriptionInArray - 1];
+  }
+  }
+
+  console.log(imgInModalWindow)
+}
+    
+function getArrayOfImageURL(gallery) {
+  return gallery.map(a => a.original)
+}
+
+function getArrayOfImgDescription(gallery) {
+  return gallery.map(a => a.description)
+}
+
 
 
   
