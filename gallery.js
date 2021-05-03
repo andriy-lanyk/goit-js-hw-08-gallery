@@ -64,10 +64,9 @@ function flippingPhoto(event) {
       const arrayOfOriginalUrl = getArrayOfImageURL(gallery);
       const arrayOfImgDescription = getArrayOfImgDescription(gallery);
       let indexOfUrlInArray = arrayOfOriginalUrl.indexOf(imgInModalWindow.src);
-      let indexOfDescriptionInArray = arrayOfImgDescription.indexOf(imgInModalWindow.alt);
+  let indexOfDescriptionInArray = arrayOfImgDescription.indexOf(imgInModalWindow.alt);
     
-  if (indexOfUrlInArray >= 1 && indexOfUrlInArray <= 7) {
-    console.log(indexOfUrlInArray)
+  if (indexOfUrlInArray >= 1 && indexOfUrlInArray <= arrayOfOriginalUrl.length - 2) {
   if (event.code === "ArrowLeft") {
     imgInModalWindow.src = arrayOfOriginalUrl[indexOfUrlInArray - 1];
     imgInModalWindow.alt = arrayOfImgDescription[indexOfDescriptionInArray - 1];
@@ -84,7 +83,7 @@ function flippingPhoto(event) {
   }
   }
 
-    if (indexOfUrlInArray === 8) {
+    if (indexOfUrlInArray === arrayOfOriginalUrl.length - 1) {
   if (event.code === "ArrowLeft") {
     imgInModalWindow.src = arrayOfOriginalUrl[indexOfUrlInArray - 1];
     imgInModalWindow.alt = arrayOfImgDescription[indexOfDescriptionInArray - 1];
