@@ -12,10 +12,11 @@ const renderList = (galleryList) => {
     href="${item.original}"
   >
     <img
-      class="gallery__image"
-      src="${item.preview}"
+      class="gallery__image lazyload"
+      data-src="${item.preview}"
       data-source="${item.original}"
       alt="${item.description}"
+      loading="lazy"
     />
   </a>
 </li>`;
@@ -86,3 +87,22 @@ function getArrayOfImageURL(gallery) {
 function getArrayOfImgDescription(gallery) {
   return gallery.map(a => a.description)
 }
+
+// Add Lazyload for pictures
+if ('loading' in HTMLImageElement.prototype) {
+  console.log("Браузер поддеживает технологию")
+} else {
+  console.log("Браузер не поддеживает технологию")
+}
+
+if ('loading' in HTMLImageElement.prototype) {
+    const images = document.querySelectorAll('img[loading="lazy"]');
+    images.forEach(img => {
+      img.src = img.dataset.src;
+    });
+  } else {
+    const script = document.createElement('script');
+    script.src =
+      'https://cdnjs.cloudflare.com/ajax/libs/lazysizes/5.1.2/lazysizes.min.js';
+    document.body.appendChild(script);
+  }
