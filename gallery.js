@@ -13,7 +13,7 @@ const renderList = (galleryList) => {
   >
     <img
       class="gallery__image lazyload"
-      data-src="${item.preview}"
+      src="${item.preview}"
       data-source="${item.original}"
       alt="${item.description}"
       loading="lazy"
