@@ -67,13 +67,15 @@ function flippingPhoto(event) {
   
   if (event.code === "ArrowLeft") {
     if (indexOfUrlInArray === 0) {
-      return;
+      indexOfUrlInArray = arrayOfOriginalUrl.length
+      indexOfDescriptionInArray = arrayOfImgDescription.length;
     }
     imgInModalWindow.src = arrayOfOriginalUrl[indexOfUrlInArray - 1];
     imgInModalWindow.alt = arrayOfImgDescription[indexOfDescriptionInArray - 1];
   } else if (event.code === "ArrowRight") {
     if (indexOfUrlInArray === arrayOfOriginalUrl.length - 1) {
-      return;
+      indexOfUrlInArray = -1;
+      indexOfDescriptionInArray = -1;
     }
     imgInModalWindow.src = arrayOfOriginalUrl[indexOfUrlInArray + 1];
     imgInModalWindow.alt = arrayOfImgDescription[indexOfDescriptionInArray + 1];
